@@ -8,7 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [roomName, setRoomName] = useState('Thanh Toán');
+  const [roomName, setRoomName] = useState('Sống Sinh Viên');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -26,10 +26,10 @@ const Navbar = () => {
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/room/${user.roomId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setRoomName(res.data.room.name || 'Thanh Toán');
+        setRoomName(res.data.room.name || 'Sống Sinh Viên');
       } catch (err) {
         console.error('Error fetching room name:', err);
-        setRoomName('Thanh Toán');
+        setRoomName('Sống Sinh Viên');
       }
     };
     fetchRoomName();
