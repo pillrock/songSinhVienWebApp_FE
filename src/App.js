@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import RegisterPage from './pages/RegisterPage';
+import RoomSelection from './components/RoomSelection';
+import Dashboard from './pages/Dashboard';
+import CreateRoom from './components/CreateRoom';
+import RoomInfo from './components/RoomInfo'; // Thêm component mới
+import PrivateRoute from './components/PrivateRoute';
+import Profile from './components/Profile';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<PrivateRoute><RegisterPage /></PrivateRoute>} />
+        <Route path="/room-selection" element={<PrivateRoute><RoomSelection /></PrivateRoute>} />
+        <Route path="/shopping" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/create-room" element={<PrivateRoute><CreateRoom /></PrivateRoute>} />
+        <Route path="/room-info" element={<PrivateRoute><RoomInfo /></PrivateRoute>} /> {/* Thêm route */}
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} /> {/* Thêm route */}
+        <Route path="/" element={<PrivateRoute><RoomSelection /></PrivateRoute>} />
+      </Routes>
+    </>
   );
 }
 
