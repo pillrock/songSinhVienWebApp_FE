@@ -57,60 +57,38 @@ const SummaryTable = ({ settlements }) => {
           </tr>
         </thead>
         <tbody>
-          {settlements.map((settlement) => {
-            const debtors = settlement.participants.filter(
-              (participant) => participant.username !== settlement.payer && participant.amountOwed > 0
-            );
+        {settlements.map((settlement) => {
+          const debtors = settlement.participants.filter(
+            (participant) => participant.username !== settlement.payer && participant.amountOwed > 0
+          );
 
-            return (
-              <tr
-                key={settlement._id}
-                className="border-b border-gray-100 hover:bg-gray-200 transition-colors duration-200"
-              >
-                <td className="p-4 text-gray-800 font-medium">{settlement.month}</td>
-                <td className="p-4 text-gray-800 font-medium">{settlement.payer}</td>
-                <td className="p-4 text-gray-800 font-medium">{formatNumber(settlement.totalAmount)}</td>
-                <td className="p-4">
-                  {debtors.length > 0 ? (
-                    debtors.map((participant) => {
-                      const filename = participant.proof ? participant.proof.split('/').pop() : null;
-                      const proofUrl = filename
-                        ? `${process.env.REACT_APP_API_URL}/payments/uploads/${filename}`
-                        : null;
-
-                      return (
-                        <div key={participant.username} className="flex items-center space-x-3 mb-3">
-                          <span
-                            className={`text-sm font-medium ${
-                              participant.paid ? 'text-green-600' : 'text-red-600'
-                            }`}
-                          >
-                            {participant.username} nợ {formatNumber(participant.amountOwed)} VND
-                            {participant.paid ? ' (Đã thanh toán)' : ' (Chưa thanh toán)'}
-                          </span>
-                          {proofUrl ? (
-                            <img
-                              src={proofUrl}
-                              alt="Payment Proof"
-                              className="w-12 h-12 object-cover rounded-md cursor-pointer hover:opacity-80 transition-opacity duration-200 shadow-sm"
-                              onClick={() => handleImageClick(proofUrl)}
-                              onError={(e) => console.log('Error loading image:', proofUrl)}
-                            />
-                          ) : (
-                            participant.proof && (
-                              <span className="text-red-500 text-xs">(Proof unavailable)</span>
-                            )
-                          )}
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <span className="text-gray-400 text-sm">Không có người nợ</span>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
+          return (
+            <tr key={settlement._id} className="border-b border-gray-100 hover:bg-gray-200 transition-colors duration-200">
+              <td className="p-4 text-gray-800 font-medium">{settlement.month}</td>
+              <td className="p-4 text-gray-800 font-medium">{settlement.payer}</td>
+              <td className="p-4 text-gray-800 font-medium">{formatNumber(settlement.totalAmount)}</td>
+              <td className="p-4">
+                {debtors.length > 0 ? (
+                  debtors.map((participant) => (
+                    <div key={participant.username} className="flex items-center space-x-3 mb-3">
+                      <span
+                        className={`text-sm font-medium ${
+                          participant.paid ? 'text-green-600' : 'text-red-600'
+                        }`}
+                      >
+                        {participant.username} nợ {formatNumber(participant.amountOwed)} VND
+                        {participant.paid ? ' (Đã thanh toán)' : ' (Chưa thanh toán)'}
+                      </span>
+                      {/* ... hiển thị proof nếu có ... */}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-gray-400 text-sm">Không có người nợ</span>
+                )}
+              </td>
+            </tr>
+          );
+        })}
         </tbody>
       </table>
       {modalOpen && <ImageModal imageUrl={selectedImage} onClose={handleCloseModal} />}

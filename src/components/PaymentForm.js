@@ -2,8 +2,24 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PaymentForm = ({ fetchData, setActivity, setNotification }) => {
+  // Hàm để định dạng ngày hôm nay thành định dạng datetime-local
+  const getTodayDateTime = () => {
+    const today = new Date();
+    return (
+      today.getFullYear() +
+      '-' +
+      String(today.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(today.getDate()).padStart(2, '0') +
+      'T' +
+      String(today.getHours()).padStart(2, '0') +
+      ':' +
+      String(today.getMinutes()).padStart(2, '0')
+    );
+  };
+
   const [formData, setFormData] = useState({
-    eventTime: '',
+    eventTime: getTodayDateTime(), // Đặt mặc định là hôm nay
     itemCategory: '',
     note: '',
     amount: '',
@@ -136,17 +152,17 @@ const PaymentForm = ({ fetchData, setActivity, setNotification }) => {
       await axios.post(`${process.env.REACT_APP_API_URL}/payments`, form, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
       });
-      setFormData({ eventTime: '', itemCategory: '', note: '', amount: '', proof: null, participants: 'all' });
+      setFormData({ eventTime: getTodayDateTime(), itemCategory: '', note: '', amount: '', proof: null, participants: 'all' }); // Reset về hôm nay
       setRawAmount('');
       setPreviewUrl(null);
       setSuggestions([]);
       setSelectedParticipants([]);
       fetchData();
-      setActivity(`Added payment: ${formData.itemCategory}`);
-      setNotification('Payment added successfully');
+      // setActivity(`Added payment: ${formData.itemCategory}`);
+      setNotification('Thêm khoản thanh toán thành công');
     } catch (err) {
       setError('Error adding payment');
-      setNotification('Failed to add payment');
+      setNotification('Lỗi khi thêm');
     }
   };
 

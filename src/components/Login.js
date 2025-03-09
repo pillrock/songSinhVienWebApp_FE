@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react'; // Thêm useRef, useEffect
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -10,6 +10,14 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
 
+  // Thêm ref để focus vào ô input
+  const usernameInputRef = useRef(null);
+
+  // Tự động focus vào ô "Tài khoản" khi component được render
+  useEffect(() => {
+    usernameInputRef.current.focus();
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -18,7 +26,7 @@ const Login = () => {
       setUser(data.user);
       navigate('/');
     } catch (err) {
-      setError('Invalid credentials');
+      setError('Tài khoản hoặc mật khẩu không chính xác');
     }
   };
 
@@ -38,6 +46,7 @@ const Login = () => {
             placeholder="Tài khoản"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            ref={usernameInputRef} // Gắn ref vào ô input
             className="w-full p-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200"
           />
           <input

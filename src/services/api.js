@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const URL_API = process.env.ENV === 'production' 
+  ? process.env.REACT_APP_API_URL 
+  : "http://localhost:5000";
+
+console.log(URL_API);
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.ENV === "production" ? process.env.REACT_APP_API_URL : "http://localhost:5000",
 });
 
 API.interceptors.request.use((config) => {
