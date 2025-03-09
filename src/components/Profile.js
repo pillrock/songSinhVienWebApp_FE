@@ -46,6 +46,7 @@ const Profile = () => {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Tên người dùng</label>
             <input
+              readOnly={true}
               type="text"
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
