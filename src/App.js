@@ -9,7 +9,7 @@ import CreateRoom from './components/CreateRoom';
 import RoomInfo from './components/RoomInfo'; // Thêm component mới
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './components/Profile';
-
+import Scoreboard from './components/ScoreBoard'
 function App() {
   return (
     <>
@@ -18,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<PrivateRoute><RegisterPage /></PrivateRoute>} />
         <Route path="/room-selection" element={<PrivateRoute><RoomSelection /></PrivateRoute>} />
+        <Route path="/scoreboard" element={<Scoreboard />} />
         <Route path="/shopping" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/create-room" element={<PrivateRoute><CreateRoom /></PrivateRoute>} />
         <Route path="/room-info" element={<PrivateRoute><RoomInfo /></PrivateRoute>} /> {/* Thêm route */}

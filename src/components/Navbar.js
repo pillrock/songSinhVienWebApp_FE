@@ -8,7 +8,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [roomName, setRoomName] = useState('Sống Sinh Viên');
+  const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
+  const [roomName, setRoomName] = useState('Sống Sinh Viên'); // Thêm lại state roomName
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -66,14 +67,47 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             {user ? (
               <>
-                <Link 
-                  to="/shopping" 
-                  className={`text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 relative ${
-                    isActive('/shopping') ? 'after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-amber-600' : ''
-                  }`}
+                {/* Menu Tiện ích (Dropdown) */}
+                <div 
+                  className="relative group"
+                  onMouseEnter={() => setIsUtilitiesOpen(true)}
+                  onMouseLeave={() => setIsUtilitiesOpen(false)}
                 >
-                  Nhật ký mua sắm
-                </Link>
+                  <span 
+                    className="text-gray-600 hover:text-amber-600 font-medium transition-colors duration-200 cursor-pointer flex items-center"
+                  >
+                    Tiện ích
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                  <div 
+                    className={`absolute left-0 top-3 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 transform transition-all duration-200 ${
+                      isUtilitiesOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+                    }`}
+                  >
+                    <div className="py-2">
+                      <Link 
+                        to="/shopping" 
+                        className={`block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-colors duration-200 ${
+                          isActive('/shopping') ? 'bg-amber-50 text-amber-600 font-semibold' : ''
+                        }`}
+                      >
+                        Nhật ký mua sắm
+                      </Link>
+                      <Link 
+                        to="/scoreboard" 
+                        className={`block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition-colors duration-200 ${
+                          isActive('/scoreboard') ? 'bg-amber-50 text-amber-600 font-semibold' : ''
+                        }`}
+                      >
+                        Tỉ số
+                      </Link>
+                      {/* Thêm các mục khác ở đây nếu cần */}
+                    </div>
+                  </div>
+                </div>
+
                 <Link 
                   to="/create-room" 
                   className={`text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 relative ${
@@ -133,6 +167,7 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Menu mobile */}
       <div
         className={`fixed top-0 left-0 h-full bg-white text-gray-800 w-72 transform transition-transform duration-300 ease-in-out z-20 shadow-lg ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -159,15 +194,31 @@ const Navbar = () => {
           {user ? (
             <ul className="space-y-6">
               <li>
-                <Link 
-                  to="/shopping" 
-                  onClick={toggleMenu} 
-                  className={`text-gray-600 hover:text-gray-800 font-medium text-lg transition-colors duration-200 relative ${
-                    isActive('/shopping') ? 'before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-5 before:bg-amber-600' : ''
-                  }`}
-                >
-                  Nhật ký mua sắm
-                </Link>
+                <span className="text-gray-600 font-medium text-lg">Tiện ích</span>
+                <ul className="mt-2 space-y-2 pl-4">
+                  <li>
+                    <Link 
+                      to="/shopping" 
+                      onClick={toggleMenu} 
+                      className={`text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 relative ${
+                        isActive('/shopping') ? 'before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-5 before:bg-amber-600' : ''
+                      }`}
+                    >
+                      Nhật ký mua sắm
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/scoreboard" 
+                      onClick={toggleMenu} 
+                      className={`text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200 relative ${
+                        isActive('/scoreboard') ? 'before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-5 before:bg-amber-600' : ''
+                      }`}
+                    >
+                      Tỉ số
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li>
                 <Link 
@@ -190,7 +241,6 @@ const Navbar = () => {
                 >
                   Thông tin phòng
                 </Link>
-                
               </li>
               <li>
                 <Link 
@@ -202,7 +252,6 @@ const Navbar = () => {
                 >
                   Thông tin người dùng
                 </Link>
-                
               </li>
               {user.role === 'admin' && (
                 <li>
